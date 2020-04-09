@@ -1,6 +1,7 @@
 import curses
 import os
 
+state = os.popen('mpc').read()
 title = os.popen('mpc current -f %title%').read()
 artist = os.popen('mpc current -f %artist%').read()
 album = os.popen('mpc current -f %album%').read()
@@ -17,7 +18,7 @@ print(trimmer(album))
 ## PLAYLIST ##
 plTitle = os.popen('mpc playlist -f %title%').read()
 plTitleList = []
-plArtist = os.popen('mpc playlist -f %title%').read()
+plArtist = os.popen('mpc playlist -f %artist%').read()
 plArtistList = []
 
 def playlistTrim(playlist):
@@ -28,3 +29,13 @@ def playlistTrim(playlist):
 
 plTitleList = playlistTrim(plTitle)
 plArtistList = playlistTrim(plArtist)
+
+print(plTitleList)
+print(plArtistList)
+## STATES ##
+play = state.split('[')[1].split(']')[0] 
+rep = state.split("repeat: ")[1].split(' ')[0] 
+rand = state.split("random: ")[1].split(' ')[0]
+sing = state.split("single: ")[1].split(' ')[0]
+
+print(play, rep, rand, sing)
