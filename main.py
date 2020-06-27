@@ -4,6 +4,7 @@ import time
 
 ## CONSTANTS ##
 splitList = [':','(',',','[',';','\n']
+songList = []
 title = ""
 artist = ""
 album = ""
@@ -17,6 +18,13 @@ rep = ""
 
 ## SONG INFO ##
 
+class song:
+    def __init__(self, title, artist, album):
+        self.title = title
+        self.artist = artist
+        self.album = album
+        
+
 def trimmer(name):
     for idx in splitList:
         if idx in name:
@@ -24,6 +32,7 @@ def trimmer(name):
     return(name)
 
 def fetchSong():
+    global title, album, artist
     title = os.popen('mpc current -f %title%').read()
     artist = os.popen('mpc current -f %artist%').read()
     album = os.popen('mpc current -f %album%').read()
@@ -64,7 +73,10 @@ def wrapper(stdscr):
     curses.curs_set(0)
     curses.use_default_colors()
     stdscr.clear()
+    fetchSong()
     stdscr.addstr(0, 0, title)
+    stdscr.addstr(1,0,artist)
+    stdscr.addstr(2,0,album)
     stdscr.refresh()
     time.sleep(5)
 curses.wrapper(wrapper)
