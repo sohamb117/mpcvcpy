@@ -78,5 +78,5 @@ def wrapper(stdscr):
     stdscr.addstr(1,0,artist)
     stdscr.addstr(2,0,album)
     stdscr.refresh()
-    time.sleep(5)
-curses.wrapper(wrapper)
+while True:
+    curses.wrapper(wrapper)
