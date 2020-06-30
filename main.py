@@ -4,27 +4,15 @@ import time
 
 ## CONSTANTS ##
 splitList = [':','(',',','[',';','\n']
-songList = []
 title = ""
 artist = ""
 album = ""
-plTitle = ""
-plArtist = ""
-state = ""
 play = ""
 rand = ""
 sing = ""
 rep = ""
 
 ## SONG INFO ##
-
-class song:
-    def __init__(self, title, artist, album):
-        self.title = title
-        self.artist = artist
-        self.album = album
-        
-
 def trimmer(name):
     for idx in splitList:
         if idx in name:
@@ -41,42 +29,32 @@ def fetchSong():
     album = trimmer(album)
 
 
-## PLAYLIST ##
-
-def playlistTrim(playlist):
-    playlistList = playlist.split('\n')
-    for x in range(0, len(playlistList)):
-        playlistList[x] = trimmer(playlistList[x])
-    return (playlistList)
-
-def fetchPlaylist():
-    plTitle = os.popen('mpc playlist -f %title%').read()
-    plTitleList = []
-    plArtist = os.popen('mpc playlist -f %artist%').read()
-    plArtistList = []
-    plTitleList = playlistTrim(plTitle)
-    plArtistList = playlistTrim(plArtist)
-
-
 ## STATES ##
 def fetchState():
     state = os.popen('mpc').read()
-    play = state.split('[')[1].split(']')[0] 
-    rep = state.split("repeat: ")[1].split(' ')[0] 
+    play = state.split('[')[1].split(']')[0]
+    rep = state.split("repeat: ")[1].split(' ')[0]
     rand = state.split("random: ")[1].split(' ')[0]
     sing = state.split("single: ")[1].split(' ')[0]
 
-
 ## CURSES FUNCTIONS ##
+def centerText(stdscr, text, y):
+    h, w = stdscr.getmaxyx()
+    x = w//2 - len(text)//2
+    stdscr.addstr(y, x, text)
+
+def draw(stdscr):
+    centerText(stdscr, title, 5)
+    centerText(stdscr, artist, 6)
+    centerText(stdscr, album, 7)
 
 def wrapper(stdscr):
     curses.curs_set(0)
     curses.use_default_colors()
     stdscr.clear()
     fetchSong()
-    stdscr.addstr(0, 0, title)
-    stdscr.addstr(1,0,artist)
-    stdscr.addstr(2,0,album)
+    draw(stdscr)
     stdscr.refresh()
+
 while True:
     curses.wrapper(wrapper)
