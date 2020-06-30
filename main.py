@@ -3,7 +3,7 @@ import os
 import time
 
 ## CONSTANTS ##
-splitList = [':','(',',','[',';','\n']
+splitList = ['(',',','[',';','\n']
 title = ""
 artist = ""
 album = ""
@@ -31,6 +31,7 @@ def fetchSong():
 
 ## STATES ##
 def fetchState():
+    global play, rep, rand, sing
     state = os.popen('mpc').read()
     play = state.split('[')[1].split(']')[0]
     rep = state.split("repeat: ")[1].split(' ')[0]
@@ -40,19 +41,24 @@ def fetchState():
 ## CURSES FUNCTIONS ##
 def centerText(stdscr, text, y):
     h, w = stdscr.getmaxyx()
-    x = w//2 - len(text)//2
+    x = w//2 - len(text)//2 + 1
     stdscr.addstr(y, x, text)
 
 def draw(stdscr):
     centerText(stdscr, title, 5)
     centerText(stdscr, artist, 6)
     centerText(stdscr, album, 7)
+    centerText(stdscr, play, 8)
+    state = ("Repeat: " + rep + " | Random: " + rand + " | Single: " + sing)
+    centerText(stdscr, state, 9)
+
 
 def wrapper(stdscr):
     curses.curs_set(0)
     curses.use_default_colors()
     stdscr.clear()
     fetchSong()
+    fetchState()
     draw(stdscr)
     stdscr.refresh()
 
