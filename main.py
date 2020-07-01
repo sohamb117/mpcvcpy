@@ -1,6 +1,5 @@
 import curses
 import os
-import time
 
 ## CONSTANTS ##
 splitList = ['(',',','[',';','\n']
@@ -43,6 +42,9 @@ def centerText(stdscr, text, y):
     h, w = stdscr.getmaxyx()
     x = w//2 - len(text)//2 + 1
     stdscr.addstr(y, x, text)
+
+def highlight(position, text):
+    print(position)
 
 def draw(stdscr):
     centerText(stdscr, title, 5)
